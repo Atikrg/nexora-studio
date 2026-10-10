@@ -1,0 +1,587 @@
+/* ==========================================================================
+   Nexora Studio — Design System ("Launch Control")
+   Tailwind CSS v4 (CSS-first config) + shadcn/ui variables.
+   Every colour on the site comes from these tokens. Do not hard-code colours.
+   Contrast ratios were checked against WCAG AA (see docs/02-design-system.md).
+   ========================================================================== */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css"; /* shadcn data-* variants + accordion keyframes */
+
+/* shadcn/ui dark variant: `.dark` on <html> (set by next-themes) */
+@custom-variant dark (&:is(.dark *));
+
+/* --------------------------------------------------------------------------
+   1. Raw palette + semantic tokens
+   Light = warm "paper" · Dark = "ink" (brand default)
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* Brand primitives (theme-independent) */
+  --ignition: oklch(0.682 0.211 37.7); /* #FF5A1F */
+  --ignition-deep: oklch(0.528 0.17 37.4); /* #B83A0A */
+  --amber: oklch(0.82 0.15 70); /* gradient partner */
+  --ink: oklch(0.15 0.002 286.1); /* #0B0B0C */
+  --bone: oklch(0.956 0.009 84.6); /* #F3F0EA */
+
+  --radius: 0.5rem;
+
+  /* Light theme */
+  --background: var(--bone);
+  --foreground: var(--ink);
+  --card: oklch(0.985 0.004 91.4); /* #FBFAF7 */
+  --card-foreground: var(--ink);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--ink);
+  --primary: var(--ignition); /* fills only — label text is ink (6.3:1) */
+  --primary-foreground: var(--ink);
+  --secondary: oklch(0.917 0.012 84.6); /* #E7E3DB */
+  --secondary-foreground: var(--ink);
+  --muted: oklch(0.926 0.012 84.6); /* #EAE6DE */
+  --muted-foreground: oklch(0.455 0.012 81.8); /* #5A564F · 6.4:1 on bg */
+  /* shadcn "accent" = subtle hover surface for menus/ghost buttons, NOT the brand accent */
+  --accent: oklch(0.907 0.013 86.8); /* #E4E0D7 */
+  --accent-foreground: var(--ink);
+  --destructive: oklch(0.536 0.191 30.1); /* #C42B1C · 5.0:1 */
+  --destructive-foreground: oklch(0.985 0.004 91.4);
+  --border: oklch(0.871 0.015 84.6); /* #D9D4CA — decorative dividers */
+  --input: oklch(0.619 0.02 81.3); /* #8C8579 · 3.2:1 field boundary */
+  --ring: var(--ignition-deep); /* 5.1:1 focus ring */
+
+  /* Custom semantic tokens */
+  --signal: var(--ignition-deep); /* brand accent as TEXT (5.1:1) */
+  --success: oklch(0.494 0.107 156); /* #1D7347 · 5.1:1 */
+  --success-foreground: oklch(0.985 0.004 91.4);
+  --warning: oklch(0.503 0.113 65); /* #8F5400 · 5.4:1 */
+  --warning-foreground: oklch(0.985 0.004 91.4);
+  --brand-gradient: linear-gradient(
+    135deg,
+    var(--ignition) 0%,
+    oklch(0.74 0.19 50) 45%,
+    var(--amber) 100%
+  );
+  --surface-glass: oklch(0.985 0.004 91.4 / 0.72);
+  --grain-opacity: 0.05;
+
+  /* Shadows — soft, layered */
+  --elevation-soft: 0 1px 2px oklch(0.2 0.01 60 / 0.06), 0 4px 12px oklch(0.2 0.01 60 / 0.06);
+  --elevation-lift:
+    0 2px 4px oklch(0.2 0.01 60 / 0.06), 0 12px 24px oklch(0.2 0.01 60 / 0.08),
+    0 32px 64px oklch(0.2 0.01 60 / 0.08);
+  --elevation-glow:
+    0 0 0 1px oklch(0.682 0.211 37.7 / 0.35), 0 8px 32px oklch(0.682 0.211 37.7 / 0.35);
+
+  color-scheme: light;
+}
+
+.dark {
+  --background: var(--ink);
+  --foreground: var(--bone);
+  --card: oklch(0.192 0 0); /* #141415 */
+  --card-foreground: var(--bone);
+  --popover: oklch(0.21 0.004 286.1); /* #18181A */
+  --popover-foreground: var(--bone);
+  --primary: var(--ignition);
+  --primary-foreground: var(--ink);
+  --secondary: oklch(0.24 0.004 286.1); /* #1F1F21 */
+  --secondary-foreground: var(--bone);
+  --muted: oklch(0.219 0.004 286.1); /* #1A1A1C */
+  --muted-foreground: oklch(0.674 0.011 81.8); /* #9A968F · 6.7:1 */
+  --accent: oklch(0.257 0.004 286.1); /* #232325 */
+  --accent-foreground: var(--bone);
+  --destructive: oklch(0.709 0.183 27.7); /* #FF6B5E · 7.0:1 */
+  --destructive-foreground: var(--ink);
+  --border: oklch(0.286 0.005 286.1); /* #2A2A2D */
+  --input: oklch(0.526 0.011 78.2); /* #6E6A64 · 3.7:1 */
+  --ring: var(--ignition); /* 6.3:1 */
+
+  --signal: var(--ignition); /* 6.3:1 */
+  --success: oklch(0.749 0.163 155.3); /* #3CCB7F · 9.4:1 */
+  --success-foreground: var(--ink);
+  --warning: oklch(0.813 0.145 78); /* #F5B544 · 10.8:1 */
+  --warning-foreground: var(--ink);
+  --surface-glass: oklch(0.192 0 0 / 0.65);
+  --grain-opacity: 0.06;
+
+  /* On ink, shadows barely read — use a hairline top highlight + deep shadow */
+  --elevation-soft: inset 0 1px 0 oklch(1 0 0 / 0.04), 0 4px 12px oklch(0 0 0 / 0.4);
+  --elevation-lift:
+    inset 0 1px 0 oklch(1 0 0 / 0.06), 0 12px 24px oklch(0 0 0 / 0.45),
+    0 32px 64px oklch(0 0 0 / 0.5);
+
+  color-scheme: dark;
+}
+
+/* --------------------------------------------------------------------------
+   2. Tailwind theme mapping
+   -------------------------------------------------------------------------- */
+
+@theme inline {
+  /* Colours → bg-*, text-*, border-*, ring-* utilities */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-signal: var(--signal);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-ink: var(--ink);
+  --color-bone: var(--bone);
+  --color-ignition: var(--ignition);
+  --color-glass: var(--surface-glass);
+
+  /* Fonts (CSS variables injected by next/font in lib/fonts.ts) */
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), var(--font-geist), ui-sans-serif, sans-serif;
+  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+  --font-heading: var(--font-display); /* used by shadcn card/dialog titles */
+
+  /* Radius: base + derived */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 16px);
+  --radius-4xl: calc(var(--radius) + 24px);
+
+  /* Shadows */
+  --shadow-soft: var(--elevation-soft);
+  --shadow-lift: var(--elevation-lift);
+  --shadow-glow: var(--elevation-glow);
+}
+
+@theme {
+  /* Fluid type scale (360px → 1440px). Use: text-display-xl, text-h2, … */
+  --text-display-xl: clamp(3.5rem, 1rem + 11vw, 11rem);
+  --text-display-xl--line-height: 0.95;
+  --text-display-xl--letter-spacing: -0.035em;
+  --text-display-xl--font-weight: 800;
+
+  --text-display: clamp(2.75rem, 1rem + 7.5vw, 8rem);
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.032em;
+  --text-display--font-weight: 750;
+
+  --text-h1: clamp(2.25rem, 1.2rem + 4.2vw, 5rem);
+  --text-h1--line-height: 1.05;
+  --text-h1--letter-spacing: -0.035em;
+  --text-h1--font-weight: 700;
+
+  --text-h2: clamp(1.875rem, 1.2rem + 2.6vw, 3.5rem);
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: -0.03em;
+  --text-h2--font-weight: 700;
+
+  --text-h3: clamp(1.5rem, 1.15rem + 1.3vw, 2.25rem);
+  --text-h3--line-height: 1.15;
+  --text-h3--letter-spacing: -0.02em;
+  --text-h3--font-weight: 650;
+
+  --text-h4: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --text-h4--line-height: 1.25;
+  --text-h4--letter-spacing: -0.01em;
+  --text-h4--font-weight: 600;
+
+  --text-body-lg: clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem);
+  --text-body-lg--line-height: 1.6;
+
+  --text-body: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --text-body--line-height: 1.6;
+
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.5;
+
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.4;
+  --text-caption--letter-spacing: 0.08em;
+
+  /* Spacing: Tailwind's 4px base already gives the 8px scale
+     (1=4, 2=8, 3=12, 4=16, 6=24, 8=32, 12=48, 16=64, 24=96, 32=128, 40=160).
+     Semantic additions: */
+  --spacing-section: clamp(4.5rem, 2.6rem + 5.3vw, 8rem); /* 72px → 128px */
+  --spacing-gutter: clamp(1rem, 0.5rem + 2.2vw, 2rem); /* 16px → 32px */
+  --container-site: 80rem; /* 1280px */
+  --container-prose: 65ch;
+
+  /* Easing + durations (mirrors lib/motion.ts) */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --duration-fast: 160ms;
+  --duration-base: 320ms;
+  --duration-slow: 640ms;
+
+  /* Keyframe animations */
+  --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
+  --animate-pulse-ring: pulse-ring 2.4s var(--ease-out-quart) infinite;
+  --animate-shake: shake 0.4s var(--ease-out-quart);
+
+  @keyframes marquee {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(1);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(1.8);
+      opacity: 0;
+    }
+  }
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    20%,
+    60% {
+      transform: translateX(-6px);
+    }
+    40%,
+    80% {
+      transform: translateX(6px);
+    }
+  }
+}
+
+/* Breakpoints: Tailwind defaults already match the brief (640/768/1024/1280/1536). */
+
+/* --------------------------------------------------------------------------
+   3. Base
+   -------------------------------------------------------------------------- */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-padding-top: 6rem; /* anchor links clear the sticky header */
+  }
+
+  body {
+    @apply bg-background font-sans text-body text-foreground;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display text-balance;
+    font-optical-sizing: auto;
+  }
+
+  p {
+    @apply text-pretty;
+  }
+
+  ::selection {
+    background: var(--ignition);
+    color: var(--ink);
+  }
+
+  /* Clear, consistent focus ring everywhere — never removed */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Native cursor stays visible for text fields even with the custom cursor */
+  input,
+  textarea,
+  select,
+  [contenteditable] {
+    cursor: auto;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Reusable utilities (design-system primitives)
+   -------------------------------------------------------------------------- */
+
+/* Site container: 1280px max, fluid gutters */
+@utility container-site {
+  width: 100%;
+  max-width: var(--container-site);
+  margin-inline: auto;
+  padding-inline: var(--spacing-gutter);
+}
+
+/* Vertical rhythm for sections (72px mobile → 128px desktop) */
+@utility section-y {
+  padding-block: var(--spacing-section);
+}
+
+/* 12-column grid */
+@utility grid-site {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--spacing-gutter);
+  @media (width >= 48rem) {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+  @media (width >= 64rem) {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+}
+
+/* Mono eyebrow label: [02] — SERVICES */
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  line-height: var(--text-caption--line-height);
+  letter-spacing: var(--text-caption--letter-spacing);
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* Readable line length */
+@utility prose-width {
+  max-width: var(--container-prose);
+}
+
+/* Brand gradient text / fill */
+@utility text-gradient {
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@utility bg-brand-gradient {
+  background: var(--brand-gradient);
+}
+
+/* Sparing glassmorphism (header on scroll, floating bars) */
+@utility glass {
+  background: var(--surface-glass);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
+/* Minimum touch target */
+@utility tap-target {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Crosshair corner marks on cards (Launch Control motif) */
+@utility corner-marks {
+  position: relative;
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-color: var(--muted-foreground);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  &::before {
+    top: -1px;
+    left: -1px;
+    border-top: 1px solid;
+    border-left: 1px solid;
+  }
+  &::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. Global creative layers
+   -------------------------------------------------------------------------- */
+
+/* Film grain: single fixed SVG layer, no canvas, no JS */
+.grain-overlay {
+  position: fixed;
+  inset: -50%;
+  z-index: 60;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* Skip link */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  transform: translateY(-200%);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-weight: 600;
+  transition: transform var(--duration-fast) var(--ease-out-expo);
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* Split-text masks (GSAP SplitText appends "-mask" to the line/word class).
+   Padding gives overhanging glyphs (f, j, italic serifs) and descenders room inside the clip. */
+.split-line-mask,
+.split-word-mask {
+  padding: 0 0.1em 0.12em;
+  margin: 0 -0.1em -0.12em;
+}
+
+/* Lenis smooth scroll (recommended base styles) */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   6. Reduced motion — content first, no movement
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .grain-overlay {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Creative-layer states (classes set by the inline head script / components)
+   -------------------------------------------------------------------------- */
+
+/* Custom cursor: hide the native arrow, but never over text fields */
+html.has-custom-cursor,
+html.has-custom-cursor a,
+html.has-custom-cursor button,
+html.has-custom-cursor [role="button"] {
+  cursor: none;
+}
+html.has-custom-cursor :is(input, textarea, select, [contenteditable]) {
+  cursor: auto;
+}
+
+/* Hero split headings: pre-hidden only when motion is OK, revealed by GSAP.
+   Failsafe: if JS never runs, they fade in after 1.5s anyway. */
+html.motion-ok [data-split="immediate"] {
+  visibility: hidden;
+  animation: reveal-failsafe 0s 1.5s forwards;
+}
+@keyframes reveal-failsafe {
+  to {
+    visibility: visible;
+  }
+}
+
+/* Preloader: shown only when the head script sets html[data-preload] (first visit to "/").
+   Failsafe auto-hides after 2.5s even if JS fails. */
+.preloader {
+  display: none;
+}
+html[data-preload] .preloader {
+  display: flex;
+  animation: preloader-failsafe 0s 2.5s forwards;
+}
+@keyframes preloader-failsafe {
+  to {
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+/* Hero line reveal: pure CSS so the LCP headline never waits for JS.
+   Children rise out of an overflow mask; --d staggers lines. When the preloader runs on the
+   first visit, html.intro-delay pushes the reveal until after it lifts. */
+.hero-line {
+  overflow: clip;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+html.motion-ok .hero-line > * {
+  animation: hero-line-in 1s var(--ease-out-expo) both;
+  animation-delay: calc(var(--d, 0ms) + 100ms);
+}
+html.motion-ok.intro-delay .hero-line > * {
+  animation-delay: calc(var(--d, 0ms) + 1150ms);
+}
+@keyframes hero-line-in {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+/* Hero supporting content fades up (no mask, so button glow and magnetic movement aren't clipped) */
+html.motion-ok .hero-fade {
+  animation: hero-fade-in 0.9s var(--ease-out-expo) both;
+  animation-delay: calc(var(--d, 0ms) + 100ms);
+}
+html.motion-ok.intro-delay .hero-fade {
+  animation-delay: calc(var(--d, 0ms) + 1150ms);
+}
+@keyframes hero-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}

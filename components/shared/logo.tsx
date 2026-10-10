@@ -1,0 +1,42 @@
+import Link from "next/link";
+import { site } from "@/data/site";
+import { cn } from "@/lib/utils";
+
+/**
+ * Golden-spiral mark: a logarithmic spiral grown by the golden ratio (phi) across
+ * 1.5 turns, with the origin marked in --primary ("ignition"). Uses currentColor.
+ * Geometry generated from r = e^(b*t), b = ln(phi)/(pi/2), theta = t + pi.
+ */
+const GOLDEN_SPIRAL =
+  "M 9.39 12.29Q 9.36 12.43 9.35 12.50Q 9.34 12.58 9.34 12.66Q 9.35 12.73 9.36 12.81Q 9.37 12.89 9.40 12.98Q 9.42 13.06 9.46 13.14Q 9.49 13.22 9.54 13.30Q 9.59 13.37 9.65 13.45Q 9.71 13.52 9.78 13.59Q 9.86 13.66 9.94 13.72Q 10.03 13.78 10.12 13.83Q 10.22 13.88 10.32 13.92Q 10.43 13.96 10.54 13.99Q 10.65 14.02 10.77 14.03Q 10.90 14.04 11.02 14.04Q 11.15 14.03 11.28 14.01Q 11.41 13.99 11.54 13.95Q 11.67 13.91 11.80 13.85Q 11.93 13.79 12.06 13.72Q 12.18 13.64 12.30 13.54Q 12.42 13.44 12.53 13.32Q 12.65 13.21 12.74 13.07Q 12.84 12.93 12.92 12.78Q 13.01 12.63 13.07 12.46Q 13.14 12.29 13.18 12.10Q 13.22 11.92 13.24 11.72Q 13.26 11.53 13.26 11.32Q 13.25 11.12 13.21 10.91Q 13.18 10.70 13.12 10.48Q 13.05 10.27 12.96 10.06Q 12.86 9.85 12.74 9.65Q 12.61 9.44 12.45 9.25Q 12.29 9.05 12.10 8.87Q 11.91 8.70 11.69 8.54Q 11.47 8.38 11.22 8.24Q 10.98 8.11 10.70 8.01Q 10.43 7.90 10.13 7.83Q 9.83 7.76 9.51 7.73Q 9.20 7.70 8.86 7.71Q 8.53 7.72 8.19 7.77Q 7.85 7.83 7.51 7.93Q 7.16 8.04 6.82 8.19Q 6.48 8.34 6.15 8.55Q 5.82 8.75 5.51 9.01Q 5.19 9.27 4.90 9.57Q 4.61 9.88 4.36 10.24Q 4.10 10.59 3.88 11.00Q 3.67 11.40 3.50 11.84Q 3.33 12.29 3.22 12.77Q 3.10 13.25 3.05 13.76Q 3.00 14.28 3.02 14.81Q 3.03 15.35 3.12 15.90Q 3.21 16.45 3.38 17.01Q 3.55 17.57 3.80 18.12Q 4.04 18.67 4.38 19.20Q 4.71 19.74 5.12 20.25Q 5.54 20.76 6.03 21.22Q 6.53 21.69 7.11 22.11Q 7.68 22.52 8.33 22.87Q 8.99 23.22 9.71 23.49Q 10.43 23.77 11.21 23.95Q 11.99 24.13 12.81 24.22Q 13.64 24.30 14.51 24.28Q 15.38 24.25 16.27 24.10Q 17.16 23.96 18.06 23.69Q 18.97 23.42 19.86 23.01Q 20.75 22.61 21.62 22.08Q 22.48 21.54 23.31 20.87Q 24.13 20.20 24.88 19.39Q 25.64 18.59 26.31 17.66Q 26.98 16.72 27.55 15.67Q 28.12 14.62 28.56 13.45L 29.00 12.29";
+
+export function LogoMark({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" className={cn("size-7", className)}>
+      <path
+        d={GOLDEN_SPIRAL}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.9"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="10.43" cy="12.29" r="2.4" fill="var(--primary)" />
+    </svg>
+  );
+}
+
+export function Logo({ className }: { className?: string }) {
+  return (
+    <Link
+      href="/"
+      className={cn("group/logo inline-flex min-h-11 items-center gap-2.5 rounded-md", className)}
+      aria-label={`${site.name}, home`}
+    >
+      <LogoMark className="transition-transform duration-(--duration-slow) ease-out-expo group-hover/logo:rotate-[-12deg]" />
+      <span className="font-display text-[1.375rem] leading-none font-bold tracking-[-0.04em]">
+        nexora<span className="text-signal">.</span>
+      </span>
+    </Link>
+  );
+}
